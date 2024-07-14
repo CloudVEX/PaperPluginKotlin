@@ -2,8 +2,8 @@ import net.minecrell.pluginyml.bukkit.BukkitPluginDescription
 
 plugins {
     kotlin("jvm") version "2.+"
-    id("io.papermc.paperweight.userdev") version "1.5.+"
-    id("xyz.jpenilla.run-paper") version "2.2.2"
+    id("io.papermc.paperweight.userdev") version "1.7.+"
+    id("xyz.jpenilla.run-paper") version "2.2.2" // newer version does not work currently
     id("net.minecrell.plugin-yml.bukkit") version "0.6.0"
 }
 
@@ -20,8 +20,6 @@ dependencies {
 
     // Minecraft
     library("net.axay:kspigot:1.20.4")
-    library("dev.jorel:commandapi-bukkit-shade:9.3.0")
-    library("dev.jorel:commandapi-bukkit-kotlin:9.3.0")
 
     // Kotlin
     implementation(kotlin("stdlib"))
@@ -58,5 +56,8 @@ tasks {
     compileJava {
         options.encoding = "UTF-8"
         options.release.set(21)
+    }
+    runServer {
+        minecraftVersion(serverVersion)
     }
 }
