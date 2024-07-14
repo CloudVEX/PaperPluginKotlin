@@ -1,9 +1,10 @@
 package de.cloudvex.paperpluginkotlin
 
-import dev.jorel.commandapi.CommandAPI
-import dev.jorel.commandapi.CommandAPIBukkitConfig
+import de.cloudvex.paperpluginkotlin.commands.HelloCommand
+import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents
 import net.axay.kspigot.main.KSpigot
 import net.kyori.adventure.text.Component
+
 
 class Main : KSpigot() {
 
@@ -12,16 +13,22 @@ class Main : KSpigot() {
     }
 
     override fun load() {
-        CommandAPI.onLoad(CommandAPIBukkitConfig(this))
         server.consoleSender.sendMessage(Component.text("» PaperPlugin geladen."))
 
-        // Commands
+        val manager = this.lifecycleManager
+
+        // Docs: https://docs.papermc.io/paper/dev/commands
+        manager.registerEventHandler(LifecycleEvents.COMMANDS) { event ->
+            val commands = event.registrar()
+
+            // Commands
+            HelloCommand.register(commands)
+        }
     }
 
     override fun startup() {
         INSTANCE = this
 
-        CommandAPI.onEnable()
         config.options().copyDefaults(true)
         saveDefaultConfig()
 
@@ -29,7 +36,6 @@ class Main : KSpigot() {
     }
 
     override fun shutdown() {
-        CommandAPI.onDisable()
         server.consoleSender.sendMessage(Component.text("» PaperPlugin geladen."))
     }
 
