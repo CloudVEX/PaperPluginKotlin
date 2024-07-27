@@ -5,7 +5,7 @@ import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents
 import net.axay.kspigot.main.KSpigot
 import net.kyori.adventure.text.Component
 
-
+@Suppress("UnstableApiUsage")
 class Main : KSpigot() {
 
     companion object {

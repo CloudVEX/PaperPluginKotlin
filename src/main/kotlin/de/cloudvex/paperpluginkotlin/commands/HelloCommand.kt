@@ -3,6 +3,7 @@ package de.cloudvex.paperpluginkotlin.commands
 import com.mojang.brigadier.Command
 import io.papermc.paper.command.brigadier.Commands
 
+@Suppress("UnstableApiUsage")
 object HelloCommand {
     fun register(commands: Commands) {
         val command = Commands.literal("hello")
