@@ -1,6 +1,7 @@
 package de.cloudvex.paperpluginkotlin
 
 import de.cloudvex.paperpluginkotlin.commands.HelloCommand
+import de.cloudvex.paperpluginkotlin.extensions.AdventureExtension.Companion.deserialize
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents
 import net.axay.kspigot.main.KSpigot
 import net.kyori.adventure.text.Component
@@ -10,10 +11,13 @@ class Main : KSpigot() {
 
     companion object {
         lateinit var INSTANCE: KSpigot
+
+        lateinit var prefix: Component
     }
 
     override fun load() {
-        server.consoleSender.sendMessage(Component.text("» PaperPlugin geladen."))
+        loadMeta()
+        server.consoleSender.sendMessage(Component.text("» PaperPlugin is loading.."))
 
         val manager = this.lifecycleManager
 
@@ -27,6 +31,7 @@ class Main : KSpigot() {
     }
 
     override fun startup() {
+        server.consoleSender.sendMessage(Component.text("» PaperPlugin is enabling.."))
         INSTANCE = this
 
         config.options().copyDefaults(true)
@@ -36,7 +41,14 @@ class Main : KSpigot() {
     }
 
     override fun shutdown() {
-        server.consoleSender.sendMessage(Component.text("» PaperPlugin geladen."))
+        server.consoleSender.sendMessage(Component.text("» PaperPlugin is shutting down."))
+    }
+
+    private fun loadMeta() {
+        prefix = config.getString("meta.prefix")?.deserialize() ?: kotlin.run {
+            server.logger.warning("Meta couldn't be loaded.")
+            return
+        }
     }
 
     override fun reloadConfig() {
