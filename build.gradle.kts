@@ -12,25 +12,21 @@ val serverVersion: String by project
 
 val packageString = "${properties["group"] as String}.${rootProject.name.lowercase()}"
 
-val kSpigotVersion: String by project
+val astralVersion: String by project
+val twilightVersion: String by project
 
 repositories {
     mavenCentral()
-    maven {
-        name = "laturia"
-        url = uri("https://repo.laturia.net/releases")
-        credentials(PasswordCredentials::class)
-        authentication {
-            create<BasicAuthentication>("basic")
-        }
-    }
+    maven("https://repo.laturia.net/public")
+    maven("https://repo.flyte.gg/releases")
 }
 
 dependencies {
     paperweight.paperDevBundle("$serverVersion-R0.1-SNAPSHOT")
 
     // Minecraft
-    library("net.axay:kspigot:$kSpigotVersion")
+    implementation("net.laturia:astral:$astralVersion")
+    implementation("gg.flyte:twilight:$twilightVersion")
 
     // Kotlin
     implementation(kotlin("stdlib"))
@@ -42,7 +38,7 @@ buildConfig {
     className("BuildConfig")
     packageName(packageString)
 
-    buildConfigField("KSPIGOT_VERSION", kSpigotVersion)
+    buildConfigField("ASTRAL_VERSION", astralVersion)
 }
 
 paper {

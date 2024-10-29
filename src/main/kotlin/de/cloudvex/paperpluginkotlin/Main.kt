@@ -1,16 +1,16 @@
 package de.cloudvex.paperpluginkotlin
 
 import de.cloudvex.paperpluginkotlin.commands.HelloCommand
-import de.cloudvex.paperpluginkotlin.extensions.AdventureExtension.Companion.deserialize
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents
-import net.axay.kspigot.main.KSpigot
 import net.kyori.adventure.text.Component
+import net.kyori.adventure.text.minimessage.MiniMessage
+import net.laturia.astral.Astral
 
 @Suppress("UnstableApiUsage")
-class Main : KSpigot() {
+class Main : Astral() {
 
     companion object {
-        lateinit var INSTANCE: KSpigot
+        lateinit var INSTANCE: Astral
 
         lateinit var prefix: Component
     }
@@ -44,12 +44,12 @@ class Main : KSpigot() {
         server.consoleSender.sendMessage(Component.text("» PaperPlugin is shutting down."))
     }
 
-    private fun loadMeta() {
-        prefix = config.getString("meta.prefix")?.deserialize() ?: kotlin.run {
-            server.logger.warning("Meta couldn't be loaded.")
-            return
-        }
+    private fun loadMeta(): Boolean? {
+        prefix = MiniMessage.miniMessage().deserialize(config.getString("meta.prefix") ?: return null)
+        meta.set("prefix", prefix)
+        return true
     }
+
 
     override fun reloadConfig() {
         super.reloadConfig()
