@@ -39,6 +39,7 @@ buildConfig {
     packageName(packageString)
 
     buildConfigField("ASTRAL_VERSION", astralVersion)
+    buildConfigField("TWILIGHT_VERSION", twilightVersion)
 }
 
 paper {
