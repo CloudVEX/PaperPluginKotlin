@@ -1,6 +1,8 @@
 package de.cloudvex.paperpluginkotlin
 
 import de.cloudvex.paperpluginkotlin.commands.HelloCommand
+import gg.flyte.twilight.Twilight
+import gg.flyte.twilight.twilight
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.minimessage.MiniMessage
@@ -11,13 +13,14 @@ class Main : Astral() {
 
     companion object {
         lateinit var INSTANCE: Astral
+        lateinit var twilight: Twilight
 
         lateinit var prefix: Component
     }
 
     override fun load() {
+        logger.info("loading..")
         loadMeta()
-        server.consoleSender.sendMessage(Component.text("» PaperPlugin is loading.."))
 
         val manager = this.lifecycleManager
 
@@ -31,8 +34,9 @@ class Main : Astral() {
     }
 
     override fun startup() {
-        server.consoleSender.sendMessage(Component.text("» PaperPlugin is enabling.."))
+        logger.info("enabling..")
         INSTANCE = this
+        twilight = twilight(this)
 
         config.options().copyDefaults(true)
         saveDefaultConfig()
@@ -41,7 +45,7 @@ class Main : Astral() {
     }
 
     override fun shutdown() {
-        server.consoleSender.sendMessage(Component.text("» PaperPlugin is shutting down."))
+        logger.info("shutting down..")
     }
 
     private fun loadMeta(): Boolean? {
